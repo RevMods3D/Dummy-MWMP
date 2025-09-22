@@ -5,9 +5,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('.'));
 
 // Dummy data
-const playerNames = ["Alex","Blake","Casey","Drew","Jordan","Taylor","Sam","Riley, James, Jake, Duke"];
-const serverModes = ["Race","FreeRoam","Chase, Cop"];
-const serverTags = ["US","EU","ASIA, China"];
+const playerNames = ["Alex","Blake","Casey","Drew","Jordan","Taylor","Sam","Riley", "James", "Jake", "Duke"];
+const serverModes = ["Race","FreeRoam","Chase", "Cop"];
+const serverTags = ["US","EU","ASIA", "China"];
 
 // Servers
 let servers = [
