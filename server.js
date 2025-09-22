@@ -21,9 +21,9 @@ function generatePlayers(count) {
     for (let i = 0; i < count; i++) {
         const name = playerNames[Math.floor(Math.random() * playerNames.length)];
         players.push({
-            name,
-            ping: Math.floor(Math.random() * 100),   // Add ping
-            time: Math.floor(Math.random() * 1200)   // Add time in seconds
+            name: name,
+            pping: Math.floor(Math.random() * 100),   // <-- changed property name from ping to pping
+            time: Math.floor(Math.random() * 1200)
         });
     }
     return players;
