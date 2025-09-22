@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MWMP Dummy Server List</title>
-<style>
+    <meta charset="UTF-8">
+    <title>MWMP Dummy Server List</title>
+    <style>
   body { font-family: Arial; background: #12121f; color: white; text-align: center; }
   table { width: 90%; margin: 20px auto; border-collapse: collapse; }
   th, td { border: 1px solid #444; padding: 10px; vertical-align: top; }
@@ -12,17 +12,17 @@
   .player { margin-bottom: 3px; }
   .online { color: lightgreen; }
   .offline { color: red; }
-</style>
+    </style>
 </head>
 <body>
 
-<h1>MWMP Dummy Server List</h1>
+    <h1>MWMP Dummy Server List</h1>
 
-<table id="servers">
+    <table id="servers">
   <tr><th>Server</th><th>IP</th><th>Players</th><th>Status</th></tr>
-</table>
+    </table>
 
-<script>
+    <script>
 // Example servers
 const servers = [
   { name: "Server Alpha", ip: "127.0.0.1", maxPlayers: 30, online: true, players: [] },
@@ -77,7 +77,7 @@ function renderServers() {
 updateServers();
 // Update every 3 seconds
 setInterval(updateServers, 3000);
-</script>
+    </script>
 
 </body>
 </html>
