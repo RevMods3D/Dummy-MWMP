@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MWMP Dummy Server List</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #12121f;
+            color: white;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #444;
+            padding: 10px;
+        }
+
+        th {
+            background: #222244;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>MWMP Dummy Server List</h1>
+    <table id="servers">
+        <tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>
+    </table>
+    <script>
+const servers = [
+  { name: "Server Alpha", ip: "127.0.0.1", players: 0, maxPlayers: 32, online: true },
+  { name: "Server Beta", ip: "127.0.0.2", players: 0, maxPlayers: 32, online: true },
+  { name: "Server Gamma", ip: "127.0.0.3", players: 0, maxPlayers: 32, online: true }
+];
+
+const table = document.getElementById('servers');
+
+function renderServers() {
+  table.innerHTML = `<tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>`;
+  servers.forEach(s => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${s.name}</td>
+      <td>${s.ip}</td>
+      <td>${s.players}/${s.maxPlayers}</td>
+      <td>${s.online ? "Online" : "Offline"}</td>
+    `;
+    table.appendChild(row);
+  });
+}
+
+function updateServers() {
+  servers.forEach(s => {
+    if (Math.random() < 0.05) s.online = !s.online;
+    if (s.online) s.players = Math.floor(Math.random() * (s.maxPlayers + 1));
+    else s.players = 0;
+  });
+  renderServers();
+}
+
+renderServers();
+setInterval(updateServers, 3000);
+    </script>
+</body>
+</html>
