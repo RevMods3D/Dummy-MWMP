@@ -1,75 +1,92 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MWMP Dummy Server List</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #12121f;
-            color: white;
-            text-align: center;
-        }
-
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #444;
-            padding: 10px;
-        }
-
-        th {
-            background: #222244;
-        }
-
-        td {
-            text-align: center;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>MWMP Dummy Server List</title>
+<style>
+  body { font-family: Arial; background: #12121f; color: white; text-align: center; }
+  table { width: 90%; margin: 20px auto; border-collapse: collapse; }
+  th, td { border: 1px solid #444; padding: 10px; vertical-align: top; }
+  th { background: #222244; }
+  td { text-align: left; }
+  .player { margin-bottom: 5px; }
+  .online { color: lightgreen; }
+  .offline { color: red; }
+</style>
 </head>
 <body>
-    <h1>MWMP Dummy Server List</h1>
-    <table id="servers">
-        <tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>
-    </table>
-    <script>
+
+<h1>MWMP Dummy Server List</h1>
+
+<table id="servers">
+  <tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>
+</table>
+
+<script>
+// Example server list
 const servers = [
-  { name: "Server Alpha", ip: "127.0.0.1", players: 0, maxPlayers: 32, online: true },
-  { name: "Server Beta", ip: "127.0.0.2", players: 0, maxPlayers: 32, online: true },
-  { name: "Server Gamma", ip: "127.0.0.3", players: 0, maxPlayers: 32, online: true }
+  { name: "Server Alpha", ip: "127.0.0.1", maxPlayers: 8, online: true, players: [] },
+  { name: "Server Beta", ip: "127.0.0.2", maxPlayers: 12, online: true, players: [] },
+  { name: "Server Gamma", ip: "127.0.0.3", maxPlayers: 5, online: true, players: [] }
 ];
 
-const table = document.getElementById('servers');
+// Helper: generate a random player
+function randomPlayer() {
+  const names = ["Alex","Blake","Casey","Drew","Jordan","Taylor","Sam","Riley"];
+  return {
+    name: names[Math.floor(Math.random() * names.length)],
+    ping: Math.floor(Math.random() * 100),
+    time: `${Math.floor(Math.random()*2)}h ${Math.floor(Math.random()*60)}m`
+  };
+}
 
+// Generate random players based on player count
+function updateServers() {
+  servers.forEach(s => {
+    // Randomly toggle server online/offline
+    if (Math.random() < 0.05) s.online = !s.online;
+
+    // Generate player list if online
+    if (s.online) {
+      const count = Math.floor(Math.random() * (s.maxPlayers + 1));
+      s.players = [];
+      for (let i=0; i<count; i++) {
+        s.players.push(randomPlayer());
+      }
+    } else {
+      s.players = [];
+    }
+  });
+  renderServers();
+}
+
+// Render server table
 function renderServers() {
+  const table = document.getElementById('servers');
   table.innerHTML = `<tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>`;
   servers.forEach(s => {
     const row = document.createElement('tr');
+
+    // Build player list HTML
+    const playerHTML = s.players.map(p => 
+      `<div class="player">${p.name} | Ping: ${p.ping} | Time: ${p.time}</div>`
+    ).join('');
+
     row.innerHTML = `
       <td>${s.name}</td>
       <td>${s.ip}</td>
-      <td>${s.players}/${s.maxPlayers}</td>
-      <td>${s.online ? "Online" : "Offline"}</td>
+      <td>${playerHTML}</td>
+      <td class="${s.online ? 'online' : 'offline'}">${s.online ? 'Online' : 'Offline'}</td>
     `;
     table.appendChild(row);
   });
 }
 
-function updateServers() {
-  servers.forEach(s => {
-    if (Math.random() < 0.05) s.online = !s.online;
-    if (s.online) s.players = Math.floor(Math.random() * (s.maxPlayers + 1));
-    else s.players = 0;
-  });
-  renderServers();
-}
-
-renderServers();
+// Initial render
+updateServers();
+// Update every 3 seconds
 setInterval(updateServers, 3000);
-    </script>
+</script>
+
 </body>
 </html>
