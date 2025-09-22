@@ -9,7 +9,7 @@
   th, td { border: 1px solid #444; padding: 10px; vertical-align: top; }
   th { background: #222244; }
   td { text-align: left; }
-  .player { margin-bottom: 5px; }
+  .player { margin-bottom: 3px; }
   .online { color: lightgreen; }
   .offline { color: red; }
 </style>
@@ -19,40 +19,36 @@
 <h1>MWMP Dummy Server List</h1>
 
 <table id="servers">
-  <tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>
+  <tr><th>Server</th><th>IP</th><th>Players</th><th>Status</th></tr>
 </table>
 
 <script>
-// Example server list
+// Example servers
 const servers = [
-  { name: "Server Alpha", ip: "127.0.0.1", maxPlayers: 8, online: true, players: [] },
-  { name: "Server Beta", ip: "127.0.0.2", maxPlayers: 12, online: true, players: [] },
-  { name: "Server Gamma", ip: "127.0.0.3", maxPlayers: 5, online: true, players: [] }
+  { name: "Server Alpha", ip: "127.0.0.1", maxPlayers: 30, online: true, players: [] },
+  { name: "Server Beta", ip: "127.0.0.2", maxPlayers: 30, online: true, players: [] },
+  { name: "Server Gamma", ip: "127.0.0.3", maxPlayers: 30, online: true, players: [] }
 ];
 
-// Helper: generate a random player
-function randomPlayer() {
-  const names = ["Alex","Blake","Casey","Drew","Jordan","Taylor","Sam","Riley"];
-  return {
-    name: names[Math.floor(Math.random() * names.length)],
-    ping: Math.floor(Math.random() * 100),
-    time: `${Math.floor(Math.random()*2)}h ${Math.floor(Math.random()*60)}m`
-  };
+// Random player name generator
+const playerNames = ["Alex","Blake","Casey","Drew","Jordan","Taylor","Sam","Riley","Morgan","Jamie","Chris","Pat","Skyler","Quinn","Devon","Lee"];
+
+function generatePlayers(count) {
+  const players = [];
+  for (let i = 0; i < count; i++) {
+    const name = playerNames[Math.floor(Math.random() * playerNames.length)];
+    players.push(`${i+1}. ${name}`);
+  }
+  return players;
 }
 
-// Generate random players based on player count
+// Update server player counts
 function updateServers() {
   servers.forEach(s => {
-    // Randomly toggle server online/offline
-    if (Math.random() < 0.05) s.online = !s.online;
-
-    // Generate player list if online
+    if (Math.random() < 0.05) s.online = !s.online; // random online/offline toggle
     if (s.online) {
       const count = Math.floor(Math.random() * (s.maxPlayers + 1));
-      s.players = [];
-      for (let i=0; i<count; i++) {
-        s.players.push(randomPlayer());
-      }
+      s.players = generatePlayers(count);
     } else {
       s.players = [];
     }
@@ -60,22 +56,17 @@ function updateServers() {
   renderServers();
 }
 
-// Render server table
+// Render the table
 function renderServers() {
   const table = document.getElementById('servers');
-  table.innerHTML = `<tr><th>Name</th><th>IP</th><th>Players</th><th>Status</th></tr>`;
+  table.innerHTML = `<tr><th>Server</th><th>IP</th><th>Players</th><th>Status</th></tr>`;
   servers.forEach(s => {
+    const playerHTML = s.players.map(p => `<div class="player">${p}</div>`).join('');
     const row = document.createElement('tr');
-
-    // Build player list HTML
-    const playerHTML = s.players.map(p => 
-      `<div class="player">${p.name} | Ping: ${p.ping} | Time: ${p.time}</div>`
-    ).join('');
-
     row.innerHTML = `
       <td>${s.name}</td>
       <td>${s.ip}</td>
-      <td>${playerHTML}</td>
+      <td>${s.players.length}/${s.maxPlayers}<br>${playerHTML}</td>
       <td class="${s.online ? 'online' : 'offline'}">${s.online ? 'Online' : 'Offline'}</td>
     `;
     table.appendChild(row);
