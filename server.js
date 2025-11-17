@@ -51,15 +51,18 @@ function updateServers() {
         s.online = Math.random() > 0.05; // 5% offline chance
 
         if (s.online) {
-            // Generate a random number of players between 0 and s.maxPlayers
             const playerCount = Math.floor(Math.random() * (s.maxPlayers + 1));
             s.players = generatePlayers(playerCount);
+
+            // Mark server as full if players equal maxPlayers
+            s.full = s.players.length === s.maxPlayers;
 
             s.ping = s.players.length > 0 
                 ? Math.floor(Math.random() * 100).toString() 
                 : "N/A";
         } else {
             s.players = [];
+            s.full = false;
             s.ping = "N/A";
         }
 
