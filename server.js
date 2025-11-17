@@ -49,10 +49,22 @@ function generatePlayers(count) {
 function updateServers() {
     servers.forEach(s => {
         s.online = Math.random() > 0.05; // 5% offline chance
-        s.players = s.online ? generatePlayers(Math.floor(Math.random() * 31)) : [];
+
+        if (s.online) {
+            // Generate a random number of players between 0 and s.maxPlayers
+            const playerCount = Math.floor(Math.random() * (s.maxPlayers + 1));
+            s.players = generatePlayers(playerCount);
+
+            s.ping = s.players.length > 0 
+                ? Math.floor(Math.random() * 100).toString() 
+                : "N/A";
+        } else {
+            s.players = [];
+            s.ping = "N/A";
+        }
+
         s.mode = serverModes[Math.floor(Math.random() * serverModes.length)];
         s.tag = serverTags[Math.floor(Math.random() * serverTags.length)];
-        s.ping = s.players.length > 0 ? Math.floor(Math.random() * 100).toString() : "N/A";
     });
 }
 
