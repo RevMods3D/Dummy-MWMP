@@ -53,16 +53,16 @@ function updateServers() {
         if (s.online) {
             const playerCount = Math.floor(Math.random() * (s.maxPlayers + 1));
             s.players = generatePlayers(playerCount);
+            
+            // Only mark full if online and players == maxPlayers
+            s.full = playerCount === s.maxPlayers;
 
-            // Mark server as full if players equal maxPlayers
-            s.full = s.players.length === s.maxPlayers;
-
-            s.ping = s.players.length > 0 
+            s.ping = playerCount > 0 
                 ? Math.floor(Math.random() * 100).toString() 
                 : "N/A";
         } else {
             s.players = [];
-            s.full = false;
+            s.full = false;  // offline servers are never "full"
             s.ping = "N/A";
         }
 
